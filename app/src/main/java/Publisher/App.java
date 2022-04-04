@@ -13,7 +13,7 @@ import io.ably.lib.types.Message;
 
 public class App {
    
-    private final static String API_KEY = "F_Nmww.L3IGVw:0PQ51gLrUCh7rhneXSCxWiE-TY5Z0EVQ6HT_AICaKAw"; /* Sign up at ably.io to get your API key */
+    private final static String API_KEY = "INSERT"; /* Sign up at ably.io to get your API key */
     /* RuntimeException will be thrown if API_KEY will not be set to a proper one */
     static {
         if (API_KEY.contains("INSERT")) {
