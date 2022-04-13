@@ -26,8 +26,13 @@ public class App {
     // Create a EngineTemp Array
     private static final String[] ENGINE_ARRAY = {"435", "234", "300", "342", "354"};
 
+    // Create a TEMP Array
+    private static final String[] TEMP_ARRAY = {"112.5", "100.0", "243.4", "121.2", "343.23"};
+
      // Create a GeForce Array
      private static final String[] GEFORCE_ARRAY = {"2.5", "1.0", "2.4", "-1.2", "3.23"};
+
+
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
@@ -70,99 +75,48 @@ public class App {
         Channel ENGINEchannel = ablyRealtime.channels.get("ENGINE");
         Channel GEFORCEchannel = ablyRealtime.channels.get("MPH");
 
-        // MPH_ARRAY
+        // MPH Thread 1hz
+        // Period in ms 100 equiv to 0.1hz
+        Timer t0 = new Timer( );
+        F1TimerTask tt0 = new F1TimerTask();
+        tt0.NAME = "MPH";
+        tt0.MESSAGES = MPH_ARRAY;
+        tt0.ablyRealtime = ablyRealtime;
+        t0.scheduleAtFixedRate(tt0,1000,100);
+
+        // ENGINE Thread 1hz
+        // Period in ms 500 equiv to 0.5hz
         Timer t1 = new Timer( );
-        t1.scheduleAtFixedRate(new TimerTask() {
+        F1TimerTask tt1 = new F1TimerTask();
+        tt1.NAME = "ENGINE";
+        tt1.MESSAGES = ENGINE_ARRAY;
+        tt1.ablyRealtime = ablyRealtime;
+        t1.scheduleAtFixedRate(tt1,1000,500);
 
-            @Override
-            public void run() {
-                System.out.println("T1 Sending");
-                try {
-                    MPHchannel.publish("update", "T1:" + MPH_ARRAY[new Random().nextInt(MPH_ARRAY.length)], new CompletionListener() {
-                        @Override
-                        public void onSuccess() {
-                            // Show success message when message is sent 
-                            System.out.println("T1 Message sent");
-                        }
-            
-                        @Override
-                        public void onError(ErrorInfo reason) {
-                            // Show error message when something goes wrong 
-                            System.out.println("T1 Message not sent, error occurred: " + reason.message);
-                        }
-                    }); 
-                }
-                catch (AblyException e) {
-                    //e.printStackTrace();
-                    System.out.println("T1 Excepton");
-                } 
-                
-            }
-        }, 1000,1000); 
-  
-        // ENGINE_ARRAY
+        // TEMP Thread 1hz
+        // Period in ms 1000 equiv to 1hz
         Timer t2 = new Timer( );
-        t2.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                System.out.println("T2 Sending");
-                try {
-                    ENGINEchannel.publish("update", "T2:" + ENGINE_ARRAY[new Random().nextInt(ENGINE_ARRAY.length)] , new CompletionListener() {
-                        @Override
-                        public void onSuccess() {
-                            // Show success message when message is sent 
-                            System.out.println("T2 Message sent");
-                        }
-            
-                        @Override
-                        public void onError(ErrorInfo reason) {
-                            // Show error message when something goes wrong 
-                            System.out.println("T2 Message not sent, error occurred: " + reason.message);
-                        }
-                    }); 
-                }
-                catch (AblyException e) {
-                    //e.printStackTrace();
-                    System.out.println("T2 Excepton");
-                } 
-            }
-        }, 1000,2000);
-
-        // GEFORCE_ARRAY
-        Timer t3 = new Timer( );
-        t3.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                System.out.println("T3 Sending");
-                try {
-                    GEFORCEchannel.publish("update", "T3:" + GEFORCE_ARRAY[new Random().nextInt(GEFORCE_ARRAY.length)] , new CompletionListener() {
-                        @Override
-                        public void onSuccess() {
-                            // Show success message when message is sent 
-                            System.out.println("T3 Message sent");
-                        }
-            
-                        @Override
-                        public void onError(ErrorInfo reason) {
-                            // Show error message when something goes wrong 
-                            System.out.println("T3 Message not sent, error occurred: " + reason.message);
-                        }
-                    }); 
-                }
-                catch (AblyException e) {
-                    //e.printStackTrace();
-                    System.out.println("T3 Excepton");
-                } 
-            }
-        }, 1000,3000);
+        F1TimerTask tt2 = new F1TimerTask();
+        tt2.NAME = "TEMP";
+        tt2.MESSAGES = TEMP_ARRAY;
+        tt2.ablyRealtime = ablyRealtime;
+        t2.scheduleAtFixedRate(tt2,1000,1000);
          
+        // GEFORCE Thread 1hz
+        // Period in ms 50 equiv to .05hz
+        Timer t3 = new Timer( );
+        F1TimerTask tt3 = new F1TimerTask();
+        tt3.NAME = "GEFORCE";
+        tt3.MESSAGES = GEFORCE_ARRAY;
+        tt3.ablyRealtime = ablyRealtime;
+        t3.scheduleAtFixedRate(tt3,1000,50);
+
         // Prevent the app from quiting
         for (int i = 0; i < 1; ) {
             System.out.println("Main App Sleeping.." + i);
             try {
-             Thread.sleep(10000);
+             Thread.sleep(50000000);
+             ablyRealtime.close();
             } catch (InterruptedException e) {
              System.out.println("Thread has been interrupted");
             }

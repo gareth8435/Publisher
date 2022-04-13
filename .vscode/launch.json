@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch F1TimerTask",
+            "request": "launch",
+            "mainClass": "Publisher.F1TimerTask",
+            "projectName": "app"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"
