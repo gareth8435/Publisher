@@ -37,7 +37,7 @@ public class F1TimerTask extends TimerTask{
         try {
             // Use one connection and mutiple channels
             Channel ablychannel = ablyRealtime.channels.get(NAME);
-            ablychannel.publish("update", NAME + MESSAGES[new Random().nextInt(MESSAGES.length)], new CompletionListener() {
+            ablychannel.publish(NAME, NAME + ":" + MESSAGES[new Random().nextInt(MESSAGES.length)], new CompletionListener() {
                 @Override
                 public void onSuccess() {
                     // Show success message when message is sent 
