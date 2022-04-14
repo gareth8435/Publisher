@@ -9,7 +9,7 @@ import io.ably.lib.realtime.Channel;
 import io.ably.lib.realtime.CompletionListener;
 import io.ably.lib.types.AblyException;
 import io.ably.lib.types.ErrorInfo;
-import io.ably.lib.types.Message;
+//import io.ably.lib.types.Message;
 
 public class App {
    
@@ -70,11 +70,6 @@ public class App {
         });
 
         // Start a threads
-
-        Channel MPHchannel = ablyRealtime.channels.get("MPH");
-        Channel ENGINEchannel = ablyRealtime.channels.get("ENGINE");
-        Channel GEFORCEchannel = ablyRealtime.channels.get("MPH");
-
         // MPH Thread 1hz
         // Period in ms 100 equiv to 0.1hz
         Timer t0 = new Timer( );
